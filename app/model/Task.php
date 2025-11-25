@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace VagOff\App\Model;
 
@@ -30,7 +31,7 @@ class Task
         return $this->id;
     }
 
-    public function getName(): int
+    public function getName(): string
     {
         return $this->name;
     }
@@ -45,11 +46,16 @@ class Task
         return $this->dates;
     }
 
+    public function setDates(array $dates): void
+    {
+        $this->dates = $dates;
+    }
+
     public function addDate(DateTime $date): DateTime
     {
-        $date = array_find($this->dates, fn($item) => $item->getTimestamp() == $date->getTimestamp());
+        $existingDate = array_find($this->dates, fn($item) => $item == $date);
 
-        if ($date) {
+        if ($existingDate) {
             throw new DateException("Error: La fecha seleccionada ya existe.");
         }
 
@@ -59,14 +65,25 @@ class Task
 
     public function removeDate(DateTime $date): DateTime
     {
-        $date = array_find($this->dates, fn($item) => $item->getTimestamp() == $date->getTimestamp());
+        $existingDate = array_find($this->dates, fn($item) => $item == $date);
 
-        if (!$date) {
+        if (!$existingDate) {
             throw new DateException("Error: La fecha seleccionada no existe.");
         }
 
         $index = array_search($date, $this->dates);
         return array_splice($this->dates, $index, 1);
+    }
+
+    public function toggleDate(DateTime $date) {
+        if (in_array($date, $this->dates)) {
+            // eliminar fecha
+            $index = array_search($date, $this->dates);
+            return array_splice($this->dates, $index, 1);
+        } else {
+            // añadir fecha
+            $this->dates[] = $date;
+        }
     }
 
     public function isCompleted(DateTime $date): bool {
@@ -82,14 +99,12 @@ class Task
 
     public function __toString(): string
     {
-        $dates = "<ul>Dates:";
+        $dates = "<ul>";
         foreach ($this->dates as $date) {
-            $dates .= "<li>$date</li>";
+            $dates .= "<li>" . $date->format("d/m/Y") . "</li>";
         }
         $dates .= "</ul>";
 
-        $completed = $this->completed ? "Completed" : "Uncompleted";
-
-        return "<p>Task ID $this->id: $this->name ($completed)</p>$dates";
+        return "<p>Task ID $this->id: $this->name </p>$dates";
     }
 }
