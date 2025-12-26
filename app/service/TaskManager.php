@@ -8,11 +8,10 @@ use DateTime;
 use Exception;
 use VagOff\App\Model\Task;
 
-require __DIR__ . "/../../vendor/autoload.php";
-
 class TaskManager
 {
     private const string SESSION_KEY = "taskManager";
+    private int $idCounter = 0;
 
     private array $taskList;
 //    private array $dateList;
@@ -22,6 +21,14 @@ class TaskManager
     {
         $this->taskList = [];
 //        $this->dateList = [];
+        $maxId = 0;
+//        foreach ($this->taskList as $task) {
+//            if ($task->getId() > $maxId) {
+//                $maxId = $task->getId();
+//            }
+//        }
+//
+//        $this->idCounter = $maxId;
     }
 
     public function getTaskList(): array
@@ -34,15 +41,31 @@ class TaskManager
         return $this->dateList;
     }
 
-    public function addTask(Task $task): Task {
-        $existingTask = array_find($this->taskList, fn($item) => $item->getId() === $task->getId());
+    public function idGenerator() : int {
+        return ++ $this->idCounter;
+    }
 
-        if ($existingTask) {
-            throw new Exception("Error: The selected task already exist."); // TODO añadir excepciones personalizadas
+    public function addTask(Task $task): Task {
+
+//        $existingTask = array_find($this->taskList, fn($item) => $item->getId() === $task->getId()); // Solo funciona a partir de PHP 8.4
+//
+//        if ($existingTask) {
+//            throw new Exception("Error: The selected task already exist."); // TODO añadir excepciones personalizadas
+//        }
+
+        $task->setId($this->idGenerator());
+        $existe = false;
+
+        foreach ($this->taskList as $item) {
+            if ($item->getId() === $task->getId()) {
+                $existe = true;
+            }
         }
 
-        $this->taskList[] = $task;
-        return $task;
+        if (!$existe) {
+            $this->taskList[] = $task;
+        }
+            return $task;
     }
 
     public function removeTask(int $id): Task {
@@ -53,7 +76,9 @@ class TaskManager
         }
 
         $index = array_search($task, $this->taskList);
-        return array_splice($this->taskList, $index, 1);
+        return array_splice($this->taskList, $index, 1)[0];
+
+
     }
 
     public function searchTaskById(int $id): Task {
@@ -127,15 +152,17 @@ class TaskManager
 
     public function printTasks(): void
     {
+        echo "<ul>";
         foreach ($this->taskList as $task) {
-            echo $task;
+            echo "<li>$task</li>";
         }
+        echo "</ul>";
     }
 
-    public function printDates(): void
-    {
-        foreach ($this->dateList as $date) {
-            echo $date;
-        }
-    }
+//    public function printDates(): void
+//    {
+//        foreach ($this->dateList as $date) {
+//            echo $date;
+//        }
+//    }
 }

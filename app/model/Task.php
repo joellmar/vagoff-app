@@ -8,27 +8,29 @@ use DateTime;
 
 class Task
 {
-    private static int $idCounter = 1;
-
     private int $id;
     private string $name;
+    private string $description;
+    private array $users;
     private array $dates;
 
-    public function __construct(string $name)
+    public function __construct(string $name, string $description)
     {
-        $this->id = self::$idCounter++;
+        $this->id = 0;
         $this->name = $name;
+        $this->description = $description;
+        $this->users = [];
         $this->dates = [];
-    }
-
-    public static function getIdCounter(): int
-    {
-        return self::$idCounter;
     }
 
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getName(): string
@@ -41,6 +43,26 @@ class Task
         $this->name = $name;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getUsers(): array
+    {
+        return $this->users;
+    }
+
+    public function setUsers(array $users): void
+    {
+        $this->users = $users;
+    }
+
     public function getDates(): array
     {
         return $this->dates;
@@ -51,7 +73,7 @@ class Task
         $this->dates = $dates;
     }
 
-    public function addDate(DateTime $date): DateTime
+    public function addDate(DateTime $date): self
     {
         $existingDate = array_find($this->dates, fn($item) => $item == $date);
 
@@ -60,10 +82,10 @@ class Task
         }
 
         $this->dates[] = $date;
-        return $date;
+        return $this;
     }
 
-    public function removeDate(DateTime $date): DateTime
+    public function removeDate(DateTime $date): self
     {
         $existingDate = array_find($this->dates, fn($item) => $item == $date);
 
@@ -72,7 +94,9 @@ class Task
         }
 
         $index = array_search($date, $this->dates);
-        return array_splice($this->dates, $index, 1);
+        array_splice($this->dates, $index, 1);
+
+        return $this;
     }
 
     public function toggleDate(DateTime $date) {
@@ -105,6 +129,6 @@ class Task
         }
         $dates .= "</ul>";
 
-        return "<p>Task ID $this->id: $this->name </p>$dates";
+        return "Task ID $this->id: $this->name - $dates";
     }
 }
