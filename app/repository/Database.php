@@ -28,19 +28,23 @@ class Database
         }
     }
 
-    public function executeStatement(string $sql, array $params): int
+    public function executeUpdate(string $sql, array $params = []): int
     {
-        $statement = $this->connection->prepare($sql)->execute($params);
-        return $statement->rowCount();
+        $update = $this->connection->prepare($sql);
+        $update->execute($params);
+
+        return $update->rowCount();
     }
 
-    public function executeQuery(string $sql, array $params): array
+    public function executeQuery(string $sql, array $params = []): array
     {
-        $query = $this->connection->prepare($sql)->execute($params);
-        return $query->fecthAll();
+        $query = $this->connection->prepare($sql);
+        $query->execute($params);
+
+        return $query->fetchAll();
     }
 
-    public function closeConnection(): void
+    public function disconnect(): void
     {
         $this->connection = null;
     }

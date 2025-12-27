@@ -1,5 +1,7 @@
 {
   "require": {
+    "ext-pdo": "*",
+    "vlucas/phpdotenv": "v5.6.2"
   },
 
   "autoload": {
