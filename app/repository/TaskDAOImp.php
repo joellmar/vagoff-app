@@ -3,7 +3,6 @@
 namespace VagOff\App\repository;
 
 use Dotenv\Dotenv;
-use VagOff\App\repository\TaskDAO;
 
 
 class TaskDAOImp implements TaskDAO
@@ -43,6 +42,17 @@ class TaskDAOImp implements TaskDAO
         return $this->database->executeQuery($sql, $params);
     }
 
+    function getTaskByName(string $name): array
+    {
+        $sql = "SELECT * FROM tasks WHERE name = :name";
+
+        $params = [
+            ":name" => $name
+        ];
+
+        return $this->database->executeQuery($sql, $params);
+    }
+
     function updateTask(int $id, string $name, string $description): int
     {
         $sql = "UPDATE tasks SET name = :name, description = :description WHERE id = :id";
@@ -66,4 +76,5 @@ class TaskDAOImp implements TaskDAO
 
         return $this->database->executeUpdate($sql, $params);
     }
+
 }

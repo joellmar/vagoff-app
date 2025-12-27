@@ -8,6 +8,8 @@ interface UserDAO
 
     function getUserById(string $id): array;
 
+    function getUserByName(string $username): array;
+
     function updateUser(int $id, string $username, string $password): int;
 
     function deleteUserById(int $id): int;

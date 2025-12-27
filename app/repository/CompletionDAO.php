@@ -12,5 +12,7 @@ interface CompletionDAO
 
     function getTasksByUser(int $userId): array;
 
+    function getTasksByUserAndDay(int $userId, DateTime $doneDate): array;
+
     function getUsersByTask(int $taskId): array;
 }

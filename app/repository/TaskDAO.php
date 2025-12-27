@@ -8,6 +8,8 @@ interface TaskDAO
 
     function getTaskById(string $id): array;
 
+    function getTaskByName(string $name): array;
+
     function updateTask(int $id, string $name, string $description): int;
 
     function deleteTaskById(int $id): int;

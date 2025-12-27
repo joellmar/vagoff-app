@@ -41,6 +41,17 @@ class UserDAOImp implements UserDAO
         return $this->database->executeQuery($sql, $params);
     }
 
+    function getUserByName(string $username): array
+    {
+        $sql = "SELECT * FROM users WHERE username = :username";
+
+        $params = [
+            ":username" => $username
+        ];
+
+        return $this->database->executeQuery($sql, $params);
+    }
+
     function updateUser(int $id, string $username, string $password): int
     {
         $sql = "UPDATE users SET username = :username, password = :password WHERE id = :id";
