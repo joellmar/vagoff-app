@@ -24,7 +24,7 @@ class UserDAOImp implements UserDAO
 
         $params = [
             ":username" => $username,
-            ":password" => $password
+            ":password" => password_hash($password, PASSWORD_DEFAULT)
         ];
 
         return $this->database->executeUpdate($sql, $params);

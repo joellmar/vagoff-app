@@ -16,14 +16,23 @@ class User
         return $this->id;
     }
 
+    public function setId(int $id): User
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    public function setUsername(string $username): void
+    public function setUsername(string $username): User
     {
         $this->username = $username;
+
+        return $this;
     }
 
     public function getPassword(): string
@@ -31,9 +40,11 @@ class User
         return $this->password;
     }
 
-    public function setPassword(string $password): void
+    public function setPassword(string $password): User
     {
         $this->password = $password;
+
+        return $this;
     }
 
     public function getTasks(): array
@@ -41,8 +52,10 @@ class User
         return $this->tasks;
     }
 
-    public function setTasks(array $tasks): void
+    public function setTasks(array $tasks): User
     {
         $this->tasks = $tasks;
+
+        return $this;
     }
 }
