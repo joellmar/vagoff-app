@@ -2,6 +2,7 @@
 
 namespace VagOff\App\repository;
 
+use Dotenv\Dotenv;
 use PDO;
 
 class Database
@@ -12,16 +13,15 @@ class Database
         PDO::ATTR_EMULATE_PREPARES => false,                  // Desactiva las consultas preparadas emuladas, haciendo las consultas más seguras contra inyecciones SQL.
     ];
 
+    private Dotenv $dotenv;
     private PDO $connection;
 
-    public function __construct(
-        private string $dsn,
-        private string $user,
-        private string $password,
-    )
-    {
+    public function __construct() {
+        $this->dotenv = Dotenv::createImmutable(__DIR__ . "/../../");
+        $this->dotenv->safeLoad();
+
         try {
-            $this->connection = new PDO($dsn, $user, $password, self::DEFAULT_OPTIONS);
+            $this->connection = new PDO($_ENV["DSN"], $_ENV["USER"], $_ENV["PASSWORD"], self::DEFAULT_OPTIONS);
             echo "Conexión exitosa a la base de datos.";
         } catch (PDOException $e) {
             echo 'Falló la conexión: ' . $e->getMessage();

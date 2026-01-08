@@ -4,24 +4,22 @@ namespace VagOff\App\service;
 
 use VagOff\App\model\User;
 use VagOff\App\repository\CompletionDAO;
-use VagOff\App\repository\CompletionDAOImp;
 use VagOff\App\repository\UserDAO;
-use VagOff\App\repository\UserDAOImp;
 
 class LoginService
 {
-    private const SESSION_kEY = "user";
+    private const string SESSION_KEY = "user";
 
     public function __construct(
-        private UserDAO $userDao = new UserDAOImp(),
-        private CompletionDAO $completionDao = new CompletionDAOImp(),
-        private User $user = new User())
-    {}
+        private UserDAO $userDao,
+        private CompletionDAO $completionDao,
+        private User $user
+    ) {}
 
     public function registerUser(string $username, string $password): int {
-        $dbUser = $this->userDao->getUserByName($username);
+        $results = $this->userDao->getUserByName($username);
 
-        if ($dbUser) {
+        if ($results) {
             return -1;
         }
 
@@ -29,9 +27,17 @@ class LoginService
     }
 
     public function authenticateUser(string $username, string $password): bool {
-        $dbUser = $this->userDao->getUserByName($username)[0];
+        $results = $this->userDao->getUserByName($username);
+
+        if (empty($results)) {
+            $_SESSION["error"] = "There doesn't exist an user account with that username";
+            return false;
+        }
+
+        $dbUser = $results[0];
         $isVerified = password_verify($password, $dbUser["password"]);
 
+        $_SESSION["error"] = "Si se ve este error es porque no se ha podido verificar correctamente la contraseña.";
         return ($dbUser && $isVerified);
     }
 
@@ -43,7 +49,7 @@ class LoginService
         $dbUser = $this->userDao->getUserByName($username)[0];
 
         $this->user->setId($dbUser["id"])->setUsername($dbUser["username"])->setPassword("password");
-        $_SESSION[self::SESSION_kEY] = $this->user;
+        $_SESSION[self::SESSION_KEY] = $this->user;
 
         return $this->user;
     }

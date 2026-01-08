@@ -7,15 +7,11 @@ use Dotenv\Dotenv;
 
 class CompletionDAOImp implements CompletionDAO
 {
-    private Dotenv $dotenv;
     private Database $database;
 
-    public function __construct()
+    public function __construct(Database $database)
     {
-        $this->dotenv = Dotenv::createImmutable(__DIR__);
-        $this->dotenv->safeLoad();
-
-        $this->database = new Database($_ENV["DNS"], $_ENV["USER"], $_ENV["PASSWORD"]);
+        $this->database = $database;
     }
 
     function assignTaskToUser(int $userId, int $taskId, DateTime $doneDate): int

@@ -10,21 +10,21 @@ $error = $_SESSION["error"] ?? "";
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <title>Register</title>
 </head>
 <body>
-    <form action="" method="post">
+    <form action="trueIndex.php?action=register" method="post">
         <h1>Register</h1>
         <div>
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="Username" maxlength="50" required>
             <span><?= $error ?></span>
         </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Email" maxlength="50" required>
-            <span><?= $error ?></span>
-        </div>
+<!--        <div>-->
+<!--            <label for="email">Email</label>-->
+<!--            <input type="email" id="email" name="email" placeholder="Email" maxlength="50" required>-->
+<!--            <span>--><?php //= $error ?><!--</span>-->
+<!--        </div>-->
         <div>
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Password" maxlength="50" required>
@@ -32,10 +32,11 @@ $error = $_SESSION["error"] ?? "";
         </div>
         <div>
             <label for="pwd-confirm">Confirm Password</label>
-            <input type="password" id="pwd-confirm" name="pwd-confirm" placeholder="Password" maxlength="50" required>
+            <input type="password" id="pwd-confirm" name="pwdConfirm" placeholder="Password" maxlength="50" required>
             <span><?= $error ?></span>
         </div>
-        <button type="submit" name="register-button">Register</button>
+        <button type="submit" name="registerButton">Register</button>
     </form>
+    <a href="trueIndex.php?action=login">Log In</a>
 </body>
 </html>

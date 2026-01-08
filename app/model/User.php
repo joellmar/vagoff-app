@@ -5,9 +5,9 @@ namespace VagOff\App\model;
 class User
 {
     public function __construct(
-        private int $id,
-        private string $username,
-        private string $password,
+        private int $id = 0,
+        private string $username = "",
+        private string $password = "",
         private array $tasks = []
     ) {}
 
