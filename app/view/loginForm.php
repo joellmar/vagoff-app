@@ -13,7 +13,7 @@
         <title>Login</title>
     </head>
     <body>
-        <form action="trueIndex.php?action=login" method="post">
+        <form action="index.php?action=login" method="post">
             <h1>Log In</h1>
             <div>
                 <label for="username">Username</label>
@@ -28,6 +28,6 @@
 
             <button type="submit" name="loginButton">Log In</button>
         </form>
-        <a href="trueIndex.php?action=register">Register</a>
+        <a href="index.php?action=register">Register</a>
     </body>
 </html>

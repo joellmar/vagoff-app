@@ -13,8 +13,8 @@
     <body>
         <h1>VagOff</h1>
 
-        <a href="trueIndex.php?action=login">Log in</a>
-        <a href="trueIndex.php?action=register">Register</a>
+        <a href="index.php?action=login">Log in</a>
+        <a href="index.php?action=register">Register</a>
         <a href="">Exit</a>
     </body>
 </html>

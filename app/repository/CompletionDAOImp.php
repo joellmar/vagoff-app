@@ -14,27 +14,27 @@ class CompletionDAOImp implements CompletionDAO
         $this->database = $database;
     }
 
-    function assignTaskToUser(int $userId, int $taskId, DateTime $doneDate): int
+    function assignTaskToUser(int $userId, int $taskId, DateTime $date): int
     {
-        $sql = "INSERT INTO completions VALUES (:userId, :taskId, :doneDate)";
+        $sql = "INSERT INTO completions VALUES (:userId, :taskId, :date)";
 
         $params = [
             ":userId" => $userId,
             ":taskId" => $taskId,
-            ":doneDate" => $doneDate
+            ":date" => $date->format("Y-m-d")
         ];
 
         return $this->database->executeUpdate($sql, $params);
     }
 
-    function completeTask(int $userId, int $taskId, DateTime $doneDate): int
+    function completeTask(int $userId, int $taskId, DateTime $date): int
     {
-        $sql = "UPDATE completions SET completed = TRUE WHERE user_id = :userId AND task_id = :taskId AND done_date = :doneDate";
+        $sql = "UPDATE completions SET completed = TRUE WHERE user_id = :userId AND task_id = :taskId AND done_date = :date";
 
         $params = [
             ":userId" => $userId,
             ":taskId" => $taskId,
-            ":doneDate" => $doneDate
+            ":date" => $date->format("Y-m-d")
         ];
 
         return $this->database->executeUpdate($sql, $params);
@@ -42,7 +42,7 @@ class CompletionDAOImp implements CompletionDAO
 
     function getTasksByUser(int $userId): array
     {
-        $sql = "SELECT DISTINCT task_id FROM completions WHERE user_id = :userId";
+        $sql = "SELECT DISTINCT * FROM completions WHERE user_id = :userId";
 
         $params = [
             ":userId" => $userId
@@ -51,12 +51,12 @@ class CompletionDAOImp implements CompletionDAO
         return $this->database->executeQuery($sql, $params);
     }
 
-    function getTasksByUserAndDay(int $userId, DateTime $doneDate): array {
-        $sql = "SELECT DISTINCT task_id FROM completions WHERE user_id = :userId AND done_date = :doneDate";
+    function getTasksByUserAndDate(int $userId, DateTime $date): array {
+        $sql = "SELECT DISTINCT tasks.id, tasks.name, tasks.description, completions.done_date, completions.completed FROM completions INNER JOIN tasks ON completions.task_id = tasks.id WHERE user_id = :userId AND done_date = :date";
 
         $params = [
             ":userId" => $userId,
-            ":doneDate" => $doneDate
+            ":date" => $date->format("Y-m-d")
         ];
 
         return $this->database->executeQuery($sql, $params);
@@ -64,7 +64,7 @@ class CompletionDAOImp implements CompletionDAO
 
     function getUsersByTask(int $taskId): array
     {
-        $sql = "SELECT DISTINCT user_id FROM completions WHERE task_id = :taskId";
+        $sql = "SELECT DISTINCT * FROM completions WHERE task_id = :taskId";
 
         $params = [
             ":userId" => $taskId

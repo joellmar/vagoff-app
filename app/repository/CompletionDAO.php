@@ -6,13 +6,13 @@ use DateTime;
 
 interface CompletionDAO
 {
-    function assignTaskToUser(int $userId, int $taskId, DateTime $dateTime): int;
+    function assignTaskToUser(int $userId, int $taskId, DateTime $date): int;
 
-    function completeTask(int $userId, int $taskId, DateTime $dateTime): int;
+    function completeTask(int $userId, int $taskId, DateTime $date): int;
 
     function getTasksByUser(int $userId): array;
 
-    function getTasksByUserAndDay(int $userId, DateTime $doneDate): array;
+    function getTasksByUserAndDate(int $userId, DateTime $date): array;
 
     function getUsersByTask(int $taskId): array;
 }

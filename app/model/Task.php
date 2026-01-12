@@ -11,16 +11,16 @@ class Task
     private int $id;
     private string $name;
     private string $description;
-    private array $users;
-    private array $dates;
+    private DateTime $date;
+    private bool $isCompleted;
 
-    public function __construct(string $name, string $description)
+    public function __construct(int $id, string $name, string $description, DateTime $date, bool $isCompleted)
     {
-        $this->id = 0;
+        $this->id = $id;
         $this->name = $name;
         $this->description = $description;
-        $this->users = [];
-        $this->dates = [];
+        $this->date = $date;
+        $this->isCompleted = $isCompleted;
     }
 
     public function getId(): int
@@ -28,9 +28,11 @@ class Task
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): Task
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): string
@@ -38,9 +40,10 @@ class Task
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): Task
     {
         $this->name = $name;
+        return $this;
     }
 
     public function getDescription(): string
@@ -48,78 +51,34 @@ class Task
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): Task
     {
         $this->description = $description;
-    }
-
-    public function getUsers(): array
-    {
-        return $this->users;
-    }
-
-    public function setUsers(array $users): void
-    {
-        $this->users = $users;
-    }
-
-    public function getDates(): array
-    {
-        return $this->dates;
-    }
-
-    public function setDates(array $dates): void
-    {
-        $this->dates = $dates;
-    }
-
-    public function addDate(DateTime $date): self
-    {
-        $existingDate = array_find($this->dates, fn($item) => $item == $date);
-
-        if ($existingDate) {
-            throw new DateException("Error: La fecha seleccionada ya existe.");
-        }
-
-        $this->dates[] = $date;
         return $this;
     }
 
-    public function removeDate(DateTime $date): self
+    public function getDate(): DateTime
     {
-        $existingDate = array_find($this->dates, fn($item) => $item == $date);
+        return $this->date;
+    }
 
-        if (!$existingDate) {
-            throw new DateException("Error: La fecha seleccionada no existe.");
-        }
-
-        $index = array_search($date, $this->dates);
-        array_splice($this->dates, $index, 1);
-
+    public function setDate(DateTime $date): Task
+    {
+        $this->date = $date;
         return $this;
     }
 
-    public function toggleDate(DateTime $date) {
-        if (in_array($date, $this->dates)) {
-            // eliminar fecha
-            $index = array_search($date, $this->dates);
-            return array_splice($this->dates, $index, 1);
-        } else {
-            // añadir fecha
-            $this->dates[] = $date;
-        }
-    }
-
-    public function isCompleted(DateTime $date): bool {
-        return in_array($date, $this->dates);
-    }
-
-    public function printDates(): void
+    public function isCompleted(): bool
     {
-        foreach ($this->dates as $date) {
-            echo $date;
-        }
+        return $this->isCompleted;
     }
+
+    public function setIsCompleted(bool $isCompleted): Task
+    {
+        $this->isCompleted = $isCompleted;
+        return $this;
+    }
+
 
     public function __toString(): string
     {

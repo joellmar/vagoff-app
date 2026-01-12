@@ -68,7 +68,6 @@ class LoginController {
 
         if (!$isAuthorized) {
             include __DIR__ . "/../view/loginForm.php";
-
             return false;
         }
 
@@ -77,17 +76,6 @@ class LoginController {
         $_SESSION["info"] = "You've started session.";
 
         return $isAuthorized;
-    }
-
-    public function showHomePage(): bool {
-        if (!$_SESSION["user"]) {
-            $_SESSION["error"] = "Access error: invalid user in current session.";
-            include __DIR__ . "/../view/loginForm.php";
-            return false;
-        }
-
-        include __DIR__ . "/../view/homePage.php";
-        return true;
     }
 
     private function sanitizeInputField(string $fieldName): mixed {

@@ -13,7 +13,7 @@ $error = $_SESSION["error"] ?? "";
     <title>Register</title>
 </head>
 <body>
-    <form action="trueIndex.php?action=register" method="post">
+    <form action="index.php?action=register" method="post">
         <h1>Register</h1>
         <div>
             <label for="username">Username</label>
@@ -37,6 +37,6 @@ $error = $_SESSION["error"] ?? "";
         </div>
         <button type="submit" name="registerButton">Register</button>
     </form>
-    <a href="trueIndex.php?action=login">Log In</a>
+    <a href="index.php?action=login">Log In</a>
 </body>
 </html>
